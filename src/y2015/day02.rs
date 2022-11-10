@@ -1,36 +1,38 @@
 pub fn p1(input: &str) -> usize {
-    input.lines().map(resolve_wrapping).sum()
+    sum_calc(input, wrapping_formula)
 }
 
 pub fn p2(input: &str) -> usize {
-    input.lines().map(resolve_ribbon).sum()
+    sum_calc(input, ribbon_formula)
 }
 
-fn resolve_wrapping(line: &str) -> usize {
-    let (l, w, h) = parse_dimensions(line);
-    let [a, b, c] = sorted_dims(l, w, h);
+fn sum_calc(input: &str, calc_fn: fn([usize; 3]) -> usize) -> usize {
+    input
+        .lines()
+        .map(parse_dimensions)
+        .map(sort_dimensions)
+        .map(calc_fn)
+        .sum()
+}
 
+fn wrapping_formula([a, b, c]: [usize; 3]) -> usize {
     2 * a * b + 2 * b * c + 2 * a * c + a * b
 }
 
-fn resolve_ribbon(line: &str) -> usize {
-    let (l, w, h) = parse_dimensions(line);
-    let [a, b, c] = sorted_dims(l, w, h);
-
+fn ribbon_formula([a, b, c]: [usize; 3]) -> usize {
     2 * (a + b) + a * b * c
 }
 
-fn parse_dimensions(line: &str) -> (usize, usize, usize) {
+fn parse_dimensions(line: &str) -> [usize; 3] {
     let data = line
         .split('x')
         .map(|n| n.parse().expect(n))
         .collect::<Vec<_>>();
 
-    (data[0], data[1], data[2])
+    [data[0], data[1], data[2]]
 }
 
-fn sorted_dims(l: usize, w: usize, h: usize) -> [usize; 3] {
-    let mut dims = [l, w, h];
+fn sort_dimensions(mut dims: [usize; 3]) -> [usize; 3] {
     dims.sort();
     dims
 }

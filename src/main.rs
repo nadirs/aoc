@@ -1,10 +1,10 @@
 pub mod y2015;
 
 fn main() -> Result<(), aoc::Error> {
-    let input = aoc::pull_input(2015, 4)?;
+    let input = aoc::pull_input(2015, 5)?;
 
-    println!("{:?}", y2015::day04::p1(&input));
-    println!("{:?}", y2015::day04::p2(&input));
+    println!("{:?}", y2015::day05::p1(&input));
+    println!("{:?}", y2015::day05::p2(&input));
 
     Ok(())
 }

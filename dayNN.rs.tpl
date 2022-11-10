@@ -12,11 +12,11 @@ mod tests {
 
     #[test]
     fn test_p1() {
-        assert!(false);
+        assert_eq!(p1(""), 1);
     }
 
     #[test]
     fn test_p2() {
-        assert!(false);
+        assert_eq!(p2(""), 2);
     }
 }

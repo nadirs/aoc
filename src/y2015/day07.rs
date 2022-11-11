@@ -5,7 +5,7 @@ use nom::{
     bytes::complete::{tag, take_until},
     character::complete::{alpha1, digit1},
     combinator::{all_consuming, map, map_res},
-    sequence::{delimited, preceded, separated_pair},
+    sequence::{preceded, separated_pair},
     IResult,
 };
 
@@ -46,7 +46,7 @@ impl Emu {
         self.state = HashMap::new()
     }
 
-    fn wire(&mut self, op: Op, dst: Dest) {
+    fn wire(&mut self, op: Op, dst: String) {
         self.logic.insert(dst, op);
     }
 
@@ -95,8 +95,6 @@ impl From<u16> for Wire {
     }
 }
 
-type Dest = String;
-
 #[derive(Clone, Debug, PartialEq)]
 enum Op {
     Id(Wire),
@@ -108,14 +106,14 @@ enum Op {
 }
 
 impl Op {
-    fn parse(input: &str) -> IResult<&str, (Op, Dest)> {
+    fn parse(input: &str) -> IResult<&str, (Op, String)> {
         let mut op_parsers = alt((
-            all_consuming(parse_lit),
-            all_consuming(parse_not),
-            all_consuming(parse_and),
-            all_consuming(parse_or),
-            all_consuming(parse_lshift),
-            all_consuming(parse_rshift),
+            all_consuming(map(parse_wire, Op::Id)),
+            map(preceded(tag("NOT "), parse_wire), Op::Not),
+            parse_binop(parse_wire, " AND ", parse_wire, Op::And),
+            parse_binop(parse_wire, " OR ", parse_wire, Op::Or),
+            parse_binop(parse_wire, " LSHIFT ", parse_u16, Op::Lshift),
+            parse_binop(parse_wire, " RSHIFT ", parse_u16, Op::Rshift),
         ));
         let parse_op = separated_pair(take_until(" -> "), tag(" -> "), parse_string);
         let (input, (op_input, dst)) = all_consuming(parse_op)(input)?;
@@ -125,40 +123,8 @@ impl Op {
     }
 }
 
-fn parse_lit(input: &str) -> IResult<&str, Op> {
-    map(parse_wire, Op::Id)(input)
-}
-
-fn parse_not(input: &str) -> IResult<&str, Op> {
-    map(preceded(tag("NOT "), parse_wire), Op::Not)(input)
-}
-
-fn parse_and(input: &str) -> IResult<&str, Op> {
-    parse_binop("AND", Op::And, parse_wire, parse_wire)(input)
-}
-
-fn parse_or(input: &str) -> IResult<&str, Op> {
-    parse_binop("OR", Op::Or, parse_wire, parse_wire)(input)
-}
-
-fn parse_lshift(input: &str) -> IResult<&str, Op> {
-    parse_binop("LSHIFT", Op::Lshift, parse_wire, parse_u16)(input)
-}
-
-fn parse_rshift(input: &str) -> IResult<&str, Op> {
-    parse_binop("RSHIFT", Op::Rshift, parse_wire, parse_u16)(input)
-}
-
-fn parse_binop<'a, A, B>(
-    sep: &'a str,
-    mut f: impl FnMut(A, B) -> Op,
-    parse_a: impl FnMut(&'a str) -> IResult<&'a str, A>,
-    parse_b: impl FnMut(&'a str) -> IResult<&'a str, B>,
-) -> impl FnMut(&'a str) -> IResult<&'a str, Op> {
-    map(
-        separated_pair(parse_a, delimited(tag(" "), tag(sep), tag(" ")), parse_b),
-        move |(a, b)| f(a, b),
-    )
+fn parse_wire(input: &str) -> IResult<&str, Wire> {
+    alt((map(parse_u16, Wire::Lit), map(parse_string, Wire::Str)))(input)
 }
 
 fn parse_u16(input: &str) -> IResult<&str, u16> {
@@ -169,8 +135,13 @@ fn parse_string(input: &str) -> IResult<&str, String> {
     map(alpha1, String::from)(input)
 }
 
-fn parse_wire(input: &str) -> IResult<&str, Wire> {
-    alt((map(parse_u16, Wire::Lit), map(parse_string, Wire::Str)))(input)
+fn parse_binop<'a, A, B>(
+    left: impl FnMut(&'a str) -> IResult<&'a str, A>,
+    sep: &'a str,
+    right: impl FnMut(&'a str) -> IResult<&'a str, B>,
+    mut f: impl FnMut(A, B) -> Op,
+) -> impl FnMut(&'a str) -> IResult<&'a str, Op> {
+    map(separated_pair(left, tag(sep), right), move |(a, b)| f(a, b))
 }
 
 #[cfg(test)]

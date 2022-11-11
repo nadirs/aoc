@@ -22,7 +22,7 @@ fn parse_routes(input: &str) -> (RouteMap<'_>, LocSet<'_>) {
     for l in input.lines() {
         let (loc1, rest) = l.split_once(" to ").unwrap();
         let (loc2, rest) = rest.split_once(" = ").unwrap();
-        let dist = usize::from_str_radix(rest, 10).unwrap();
+        let dist = rest.parse::<usize>().unwrap();
 
         add_route(&mut map, &mut locs, loc1, loc2, dist);
         add_route(&mut map, &mut locs, loc2, loc1, dist);

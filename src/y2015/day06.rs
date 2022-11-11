@@ -19,9 +19,9 @@ fn exec(input: &str, mode: Mode) -> usize {
     grid.count_lights()
 }
 
-const CMD_TURN_ON: &'static str = "turn on";
-const CMD_TURN_OFF: &'static str = "turn off";
-const CMD_TOGGLE: &'static str = "toggle";
+const CMD_TURN_ON: &str = "turn on";
+const CMD_TURN_OFF: &str = "turn off";
+const CMD_TOGGLE: &str = "toggle";
 
 type Pos = (usize, usize);
 

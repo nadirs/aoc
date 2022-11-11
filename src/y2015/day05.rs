@@ -37,10 +37,8 @@ fn is_nice_p2(s: &str) -> bool {
         if preprev_pair == curr_pair {
             has_duplicate_pair = true;
         }
-        if prev_pair != curr_pair {
-            if !set.insert((a, b)) {
-                has_duplicate_pair = true;
-            }
+        if prev_pair != curr_pair && !set.insert((a, b)) {
+            has_duplicate_pair = true;
         }
 
         if let Some((prev_a, _)) = prev_pair {

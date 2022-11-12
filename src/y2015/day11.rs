@@ -9,17 +9,17 @@ pub fn p2(input: &str) -> String {
 }
 
 fn next_pass(s: &str) -> String {
-    let mut pass = (s.chars().nth(0).unwrap() as u64) << (7 * 8)
+    let mut pass = (s.chars().next().unwrap() as u64) << (7 * 8)
         | (s.chars().nth(1).unwrap() as u64) << (6 * 8)
         | (s.chars().nth(2).unwrap() as u64) << (5 * 8)
         | (s.chars().nth(3).unwrap() as u64) << (4 * 8)
         | (s.chars().nth(4).unwrap() as u64) << (3 * 8)
         | (s.chars().nth(5).unwrap() as u64) << (2 * 8)
-        | (s.chars().nth(6).unwrap() as u64) << (1 * 8)
+        | (s.chars().nth(6).unwrap() as u64) << 8
         | s.chars().nth(7).unwrap() as u64;
 
     let mut chars: String = gen_chars(pass).collect();
-    for i in 0..1_000_000 {
+    for _ in 0..1_000_000 {
         if chars == "zzzzzzzz" {
             pass = 0x6161616161616161;
         }

@@ -38,7 +38,7 @@ fn look_and_say(input: &str) -> String {
 
     groups
         .into_iter()
-        .flat_map(|(d, n)| [('0' as u8 + n) as char, d])
+        .flat_map(|(d, n)| [(b'0' + n) as char, d])
         .collect()
 }
 

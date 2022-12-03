@@ -12,11 +12,6 @@ mod tests {
 
     #[test]
     fn test_p1() {
-        assert_eq!(p1(""), 1);
-    }
-
-    #[test]
-    fn test_p2() {
-        assert_eq!(p2(""), 2);
+        //assert_eq!(p1(""), 1);
     }
 }

@@ -10,8 +10,10 @@ pub fn p2(input: &str) -> usize {
 mod tests {
     use super::*;
 
+    const INPUT: &str = "";
+
     #[test]
     fn test_p1() {
-        //assert_eq!(p1(""), 1);
+        assert_eq!(p1(INPUT), 1);
     }
 }

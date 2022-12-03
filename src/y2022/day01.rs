@@ -15,7 +15,7 @@ fn sort_elves(mut elves: Vec<usize>) -> Vec<usize> {
 }
 
 pub fn p2(input: &str) -> usize {
-    sort_elves(parse_elves(input))[0..3].into_iter().sum()
+    sort_elves(parse_elves(input))[0..3].iter().sum()
 }
 
 #[cfg(test)]

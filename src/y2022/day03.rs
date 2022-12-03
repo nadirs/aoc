@@ -42,7 +42,7 @@ pub fn p2(input: &str) -> usize {
 }
 
 fn score(c: char) -> usize {
-    if 'a' <= c && c <= 'z' {
+    if ('a'..='z').contains(&c) {
         c as usize - 'a' as usize + 1
     } else {
         c as usize - 'A' as usize + 27

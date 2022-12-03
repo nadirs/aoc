@@ -10,7 +10,7 @@ fn parse_elves(input: &str) -> Vec<usize> {
 }
 
 fn sort_elves(mut elves: Vec<usize>) -> Vec<usize> {
-    elves.sort_by_key(|&n| n as isize * -1);
+    elves.sort_by_key(|&n| std::cmp::Reverse(n));
     elves
 }
 

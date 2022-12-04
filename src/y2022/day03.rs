@@ -4,13 +4,10 @@ pub fn p1(input: &str) -> usize {
     input
         .lines()
         .map(|line| {
+            let (left, right) = line.split_at(line.len() / 2);
             let (left, right) = (
-                line.chars()
-                    .take(line.chars().count() / 2)
-                    .collect::<HashSet<char>>(),
-                line.chars()
-                    .skip(line.chars().count() / 2)
-                    .collect::<HashSet<char>>(),
+                left.chars().collect::<HashSet<_>>(),
+                right.chars().collect::<HashSet<_>>(),
             );
 
             let common = *left.intersection(&right).next().unwrap();

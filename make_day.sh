@@ -12,6 +12,7 @@ DAY=$2
 PADDED_DAY=$(printf "%02d" $DAY)
 
 mkdir -p "inputs/$YEAR"
+mkdir -p "src/y$YEAR"
 
 printf "downloading input..."
 

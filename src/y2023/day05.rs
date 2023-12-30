@@ -67,7 +67,7 @@ fn parse_map<'a, Input: Iterator<Item = &'a str>>(
 ) -> (Vec<RangePair>, impl Iterator<Item = &'a str>) {
     let mut rest = lines.skip_while(|l| l.trim().is_empty() || l.contains("map"));
     let mut result = Vec::new();
-    while let Some(l) = rest.next() {
+    for l in rest.by_ref() {
         if l.trim().is_empty() {
             break;
         }

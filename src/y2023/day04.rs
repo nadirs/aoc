@@ -49,7 +49,7 @@ fn parse_nums(input: &str) -> impl Iterator<Item = usize> + '_ {
     input
         .trim()
         .split_ascii_whitespace()
-        .map(|s| s.parse::<usize>().expect(&format!("NaN: {s}")))
+        .map(|s| s.parse::<usize>().unwrap())
 }
 
 #[cfg(test)]

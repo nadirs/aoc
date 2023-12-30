@@ -40,7 +40,7 @@ pub fn p2(input: &str) -> usize {
 fn parse_input(input: &str) -> impl Iterator<Item = (usize, Cubes)> + '_ {
     input.trim().lines().map(|l| {
         let (head, sets) = l.split_once(": ").unwrap();
-        let (_, game_id) = head.split_once(" ").unwrap();
+        let (_, game_id) = head.split_once(' ').unwrap();
         let cubes = sets.split("; ").fold(Cubes::default(), |mut acc, x| {
             for (num, color) in x.split(", ").map(|c| c.split_once(' ').unwrap()) {
                 let num = num.parse::<usize>().unwrap();

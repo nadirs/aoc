@@ -3,7 +3,7 @@ use std::iter::zip;
 pub fn p1(input: &str) -> usize {
     parse_input(input)
         .map(|(t, d)| compute_ways(t, d))
-        .fold(1, |acc, x| acc * x)
+        .product()
 }
 
 fn parse_input(input: &str) -> impl Iterator<Item = (usize, usize)> + '_ {
@@ -29,8 +29,7 @@ pub fn p2(input: &str) -> usize {
 }
 
 fn parse_nums(l: &str) -> impl Iterator<Item = usize> + '_ {
-    l.trim()
-        .split_whitespace()
+    l.split_whitespace()
         .skip(1)
         .map(|n| n.parse::<usize>().unwrap())
 }

@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 macro_rules! char_to_usize {
     ($x:expr) => {
         $x as usize - '0' as usize
@@ -13,7 +15,7 @@ pub fn p1(input: &str) -> usize {
         .trim()
         .lines()
         .map(|l| {
-            let digits = l.chars().filter(|c| c.is_digit(10));
+            let digits = l.chars().filter(|c| c.is_ascii_digit());
             let first = digits.clone().next().unwrap();
             let last = digits.clone().next_back().unwrap();
 
@@ -38,7 +40,7 @@ pub fn p2(input: &str) -> usize {
                 .chars()
                 .enumerate()
                 .filter_map(|(i, c)| {
-                    if c.is_digit(10) {
+                    if c.is_ascii_digit() {
                         Some((i, char_to_usize!(c)))
                     } else {
                         None
@@ -52,13 +54,17 @@ pub fn p2(input: &str) -> usize {
             let last_word = word_pos.last();
             let last_digit = digit_pos.last();
 
-            fn choose<T: Ord>(cmp: fn(T, T) -> T, a: Option<T>, b: Option<T>) -> T {
-                if a.is_none() {
-                    b.unwrap()
-                } else if b.is_none() {
-                    a.unwrap()
+            fn choose<T: Ord + Debug>(cmp: fn(T, T) -> T, a: Option<T>, b: Option<T>) -> T {
+                if let Some(a) = a {
+                    if let Some(b) = b {
+                        cmp(a, b)
+                    } else {
+                        a
+                    }
+                } else if let Some(b) = b {
+                    b
                 } else {
-                    cmp(a.unwrap(), b.unwrap())
+                    unreachable!("both {a:?} and {b:?} were None");
                 }
             }
 

@@ -71,12 +71,10 @@ impl Schema {
                         coords.push((y, x..row.len()));
                         currently_digit = true;
                     }
-                } else {
-                    if currently_digit {
-                        currently_digit = false;
-                        let coord = coords.last_mut().expect("Coords can't be empty");
-                        coord.1.end = x;
-                    }
+                } else if currently_digit {
+                    currently_digit = false;
+                    let coord = coords.last_mut().expect("Coords can't be empty");
+                    coord.1.end = x;
                 }
             }
         }
@@ -132,7 +130,7 @@ fn is_symbol(cell: char) -> bool {
 }
 
 fn is_digit(cell: char) -> bool {
-    cell >= '0' && cell <= '9'
+    cell.is_ascii_digit()
 }
 
 #[cfg(test)]

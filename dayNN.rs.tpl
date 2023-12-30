@@ -18,4 +18,4 @@ mod tests {
     }
 }
 
-aoc::solve!($YEAR, $DAY, p1, p2)
+aoc::solve!($YEAR, $DAY, p1, p2);

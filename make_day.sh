@@ -31,5 +31,13 @@ if [ -e $SRC_RS ]; then
     exit 1
 fi
 
-cp dayNN.rs.tpl src/y$YEAR/day$PADDED_DAY.rs
+# create day file
+cat dayNN.rs.tpl | sed "s/\$YEAR/$YEAR/g" | sed "s/\$DAY/$DAY/g" > src/y$YEAR/day$PADDED_DAY.rs
+
+# add mod declaration
+echo "pub mod day${PADDED_DAY};" >> src/y$YEAR/mod.rs
+
+# update main.rs
+sed -i "s/y.*::day.*::solve/y$YEAR::day$PADDED_DAY::solve/g" src/main.rs
+
 echo "done"

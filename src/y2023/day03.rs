@@ -174,3 +174,5 @@ mod tests {
         assert!(is_symbol('*'));
     }
 }
+
+aoc::solve!(2023, 3, p1, p2);

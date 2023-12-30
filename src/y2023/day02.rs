@@ -77,3 +77,5 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
         assert_eq!(p2(INPUT), 2286);
     }
 }
+
+aoc::solve!(2023, 2, p1, p2);

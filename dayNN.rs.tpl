@@ -17,3 +17,5 @@ mod tests {
         assert_eq!(p1(INPUT), 1);
     }
 }
+
+aoc::solve!($YEAR, $DAY, p1, p2)

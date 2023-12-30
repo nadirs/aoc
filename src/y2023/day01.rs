@@ -104,3 +104,5 @@ eightwothreeeight";
         assert_eq!(p2(INPUT), 11 + 88);
     }
 }
+
+aoc::solve!(2023, 1, p1, p2);

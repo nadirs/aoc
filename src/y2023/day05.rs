@@ -141,3 +141,5 @@ humidity-to-location map:
         assert_eq!(p2(INPUT), 46);
     }
 }
+
+aoc::solve!(2023, 5, p1, p2);
